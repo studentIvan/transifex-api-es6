@@ -16,7 +16,7 @@ var request   = require('request');
 class TransifexApi {
 
   /**
-   * @param  {Object}       opts An object with required `projectName`, `user` and `password`
+   * @param  {Object}       opts An object with required `projectName`, `token`
    *                             fields. Optionally takes a `resourceName` which is stored as
    *                             the default resource.
    * @return {TransifexApi}      A new TransifexApi instance
@@ -25,14 +25,11 @@ class TransifexApi {
 
     if (!opts.projectName)
       throw new Error('No projectName option provided.');
-    if (!opts.user)
-      throw new Error('No user option provided.');
-    if (!opts.password)
-      throw new Error('No password option provided.');
+    if (!opts.token)
+      throw new Error('No token option provided.');
 
     this.projectName  = opts.projectName;
-    this.user         = opts.user;
-    this.password     = opts.password;
+    this.token        = opts.token;
     this.resourceName = opts.resourceName;
 
     this.baseUrl      = `http://www.transifex.com/api/2/project/${this.projectName}`;
@@ -53,7 +50,7 @@ class TransifexApi {
     let requestOptions = {
       method: 'GET',
       url: `${this.baseUrl}${url}`,
-      auth: { user: this.user, pass: this.password, sendImmediately: true },
+      auth: { token: this.token, sendImmediately: true },
     };
     for (let key in options)
       requestOptions[key] = options[key];
